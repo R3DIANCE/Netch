@@ -1,12 +1,12 @@
-﻿using System;
+﻿using Netch.Forms;
+using Netch.Utils;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Text;
 using System.Threading;
-using Netch.Forms;
-using Netch.Utils;
 
 namespace Netch.Controllers
 {
@@ -39,7 +39,7 @@ namespace Netch.Controllers
         public DNSController pDNSController = new DNSController();
 
         // ByPassLan IP
-        List<string> BypassLanIPs = new List<string>() { "10.0.0.0/8", "172.16.0.0/16", "192.168.0.0/24" };
+        List<string> BypassLanIPs = new List<string>() { "10.0.0.0/8", "172.16.0.0/16", "192.168.0.0/16" };
 
         /// <summary>
         ///     配置 TUNTAP 适配器
@@ -68,6 +68,7 @@ namespace Netch.Controllers
         public bool SetupBypass()
         {
             MainForm.Instance.StatusText($"{Utils.i18N.Translate("Status")}{Utils.i18N.Translate(": ")}{Utils.i18N.Translate("SetupBypass")}");
+            Logging.Info("设置绕行规则->设置让服务器 IP 走直连");
             // 让服务器 IP 走直连
             foreach (var address in ServerAddresses)
             {
@@ -80,6 +81,7 @@ namespace Netch.Controllers
             // 处理模式的绕过中国
             if (SavedMode.BypassChina)
             {
+                Logging.Info("设置绕行规则->处理模式的绕过中国");
                 using (var sr = new StringReader(Encoding.UTF8.GetString(Properties.Resources.CNIP)))
                 {
                     string text;
@@ -93,6 +95,7 @@ namespace Netch.Controllers
                 }
             }
 
+            Logging.Info("设置绕行规则->处理全局绕过 IP");
             // 处理全局绕过 IP
             foreach (var ip in Global.Settings.BypassIPs)
             {
@@ -105,6 +108,8 @@ namespace Netch.Controllers
                 }
             }
 
+            Logging.Info("设置绕行规则->处理绕过局域网 IP");
+            // 处理绕过局域网 IP
             foreach (var ip in BypassLanIPs)
             {
                 var info = ip.Split('/');
@@ -118,6 +123,7 @@ namespace Netch.Controllers
 
             if (SavedMode.Type == 2) // 处理仅规则内走直连
             {
+                Logging.Info("设置绕行规则->处理仅规则内走直连");
                 // 将 TUN/TAP 网卡权重放到最高
                 var instance = new Process
                 {
@@ -132,6 +138,7 @@ namespace Netch.Controllers
                 };
                 instance.Start();
 
+                Logging.Info("设置绕行规则->创建默认路由");
                 // 创建默认路由
                 if (!NativeMethods.CreateRoute("0.0.0.0", 0, Global.Settings.TUNTAP.Gateway, Global.TUNTAP.Index, 10))
                 {
@@ -145,6 +152,8 @@ namespace Netch.Controllers
                     return false;
                 }
 
+                Logging.Info("设置绕行规则->创建规则路由");
+                // 创建规则路由
                 foreach (var ip in SavedMode.Rule)
                 {
                     var info = ip.Split('/');
@@ -160,6 +169,7 @@ namespace Netch.Controllers
             }
             else if (SavedMode.Type == 1) // 处理仅规则内走代理
             {
+                Logging.Info("设置绕行规则->处理仅规则内走代理");
                 foreach (var ip in SavedMode.Rule)
                 {
                     var info = ip.Split('/');
@@ -196,6 +206,7 @@ namespace Netch.Controllers
                 //处理DNS代理
                 if (Global.Settings.TUNTAP.ProxyDNS)
                 {
+                    Logging.Info("设置绕行规则->处理自定义DNS代理");
                     if (Global.Settings.TUNTAP.UseCustomDNS)
                     {
                         string dns = "";
@@ -419,6 +430,10 @@ namespace Netch.Controllers
                 dns = "127.0.0.1";
                 //dns = "1.1.1.1,1.0.0.1";
             }
+            if (Global.Settings.TUNTAP.UseFakeDNS)
+            {
+                dns += " -fakeDns";
+            }
 
             if (server.Type == "Socks5")
             {
@@ -437,6 +452,8 @@ namespace Netch.Controllers
             Instance.EnableRaisingEvents = true;
             Instance.ErrorDataReceived += OnOutputDataReceived;
             Instance.OutputDataReceived += OnOutputDataReceived;
+
+            Logging.Info(Instance.StartInfo.Arguments);
 
             State = Models.State.Starting;
             Instance.Start();

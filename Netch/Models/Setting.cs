@@ -36,6 +36,11 @@ namespace Netch.Models
         ///		模式2下是否代理DNS
         /// </summary>
         public bool ProxyDNS = false;
+
+        /// <summary>
+        ///		使用Fake DNS
+        /// </summary>
+        public bool UseFakeDNS = false;
     }
 
     /// <summary>
@@ -102,7 +107,7 @@ namespace Netch.Models
         /// <summary>
         ///		Redirector TCP 占用端口
         /// </summary>
-        //public int RedirectorTCPPort = 2800;
+        public int RedirectorTCPPort = 3901;
 
         /// <summary>
         ///		HTTP 和 Socks5 本地代理地址
@@ -147,12 +152,12 @@ namespace Netch.Models
         /// <summary>
         ///     STUN测试服务器
         /// </summary>
-        public string STUN_Server = "stun.l.google.com";
+        public string STUN_Server = "stun.stunprotocol.org";
 
         /// <summary>
         ///     STUN测试服务器
         /// </summary>
-        public int STUN_Server_Port = 19302;
+        public int STUN_Server_Port = 3478;
 
         /// <summary>
         ///     是否切换为2号核心
@@ -167,11 +172,21 @@ namespace Netch.Models
         /// <summary>
         ///     是否启用启动后延迟测试
         /// </summary>
-        public bool StartedTcping = false;
+        public bool StartedTcping = true;
 
         /// <summary>
         ///     启动后延迟测试间隔/秒
         /// </summary>
         public int StartedTcping_Interval = 3;
+
+        /// <summary>
+        ///     ACL规则
+        /// </summary>
+        public string ACL = "https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/banAD.acl";
+
+        /// <summary>
+        ///     是否使用DLL启动Shadowsocks
+        /// </summary>
+        public bool BootShadowsocksFromDLL = false;
     }
 }

@@ -30,12 +30,15 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SettingForm));
             this.PortGroupBox = new System.Windows.Forms.GroupBox();
+            this.RedirectorLabel = new System.Windows.Forms.Label();
+            this.RedirectorTextBox = new System.Windows.Forms.TextBox();
             this.AllowDevicesCheckBox = new System.Windows.Forms.CheckBox();
             this.HTTPPortLabel = new System.Windows.Forms.Label();
             this.HTTPPortTextBox = new System.Windows.Forms.TextBox();
             this.Socks5PortLabel = new System.Windows.Forms.Label();
             this.Socks5PortTextBox = new System.Windows.Forms.TextBox();
             this.TUNTAPGroupBox = new System.Windows.Forms.GroupBox();
+            this.UseFakeDNSCheckBox = new System.Windows.Forms.CheckBox();
             this.TUNTAPProxyDNSCheckBox = new System.Windows.Forms.CheckBox();
             this.TUNTAPUseCustomDNSCheckBox = new System.Windows.Forms.CheckBox();
             this.TUNTAPDNSLabel = new System.Windows.Forms.Label();
@@ -49,6 +52,9 @@
             this.ControlButton = new System.Windows.Forms.Button();
             this.GlobalBypassIPsButton = new System.Windows.Forms.Button();
             this.BehaviorGroupBox = new System.Windows.Forms.GroupBox();
+            this.BootShadowsocksFromDLLCheckBox = new System.Windows.Forms.CheckBox();
+            this.AclAddr = new System.Windows.Forms.TextBox();
+            this.AclLabel = new System.Windows.Forms.Label();
             this.DetectionInterval_Label = new System.Windows.Forms.Label();
             this.DetectionInterval_TextBox = new System.Windows.Forms.TextBox();
             this.EnableStartedTcping_CheckBox = new System.Windows.Forms.CheckBox();
@@ -75,6 +81,8 @@
             // 
             // PortGroupBox
             // 
+            this.PortGroupBox.Controls.Add(this.RedirectorLabel);
+            this.PortGroupBox.Controls.Add(this.RedirectorTextBox);
             this.PortGroupBox.Controls.Add(this.AllowDevicesCheckBox);
             this.PortGroupBox.Controls.Add(this.HTTPPortLabel);
             this.PortGroupBox.Controls.Add(this.HTTPPortTextBox);
@@ -87,10 +95,27 @@
             this.PortGroupBox.TabStop = false;
             this.PortGroupBox.Text = "Local Port";
             // 
+            // RedirectorLabel
+            // 
+            this.RedirectorLabel.AutoSize = true;
+            this.RedirectorLabel.Location = new System.Drawing.Point(9, 83);
+            this.RedirectorLabel.Name = "RedirectorLabel";
+            this.RedirectorLabel.Size = new System.Drawing.Size(95, 17);
+            this.RedirectorLabel.TabIndex = 6;
+            this.RedirectorLabel.Text = "Redirector TCP";
+            // 
+            // RedirectorTextBox
+            // 
+            this.RedirectorTextBox.Location = new System.Drawing.Point(120, 80);
+            this.RedirectorTextBox.Name = "RedirectorTextBox";
+            this.RedirectorTextBox.Size = new System.Drawing.Size(294, 23);
+            this.RedirectorTextBox.TabIndex = 7;
+            this.RedirectorTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
             // AllowDevicesCheckBox
             // 
             this.AllowDevicesCheckBox.AutoSize = true;
-            this.AllowDevicesCheckBox.Location = new System.Drawing.Point(120, 80);
+            this.AllowDevicesCheckBox.Location = new System.Drawing.Point(120, 109);
             this.AllowDevicesCheckBox.Name = "AllowDevicesCheckBox";
             this.AllowDevicesCheckBox.Size = new System.Drawing.Size(206, 21);
             this.AllowDevicesCheckBox.TabIndex = 5;
@@ -134,6 +159,7 @@
             // 
             // TUNTAPGroupBox
             // 
+            this.TUNTAPGroupBox.Controls.Add(this.UseFakeDNSCheckBox);
             this.TUNTAPGroupBox.Controls.Add(this.TUNTAPProxyDNSCheckBox);
             this.TUNTAPGroupBox.Controls.Add(this.TUNTAPUseCustomDNSCheckBox);
             this.TUNTAPGroupBox.Controls.Add(this.TUNTAPDNSLabel);
@@ -151,10 +177,20 @@
             this.TUNTAPGroupBox.TabStop = false;
             this.TUNTAPGroupBox.Text = "TUN/TAP";
             // 
+            // UseFakeDNSCheckBox
+            // 
+            this.UseFakeDNSCheckBox.AutoSize = true;
+            this.UseFakeDNSCheckBox.Location = new System.Drawing.Point(10, 160);
+            this.UseFakeDNSCheckBox.Name = "UseFakeDNSCheckBox";
+            this.UseFakeDNSCheckBox.Size = new System.Drawing.Size(316, 21);
+            this.UseFakeDNSCheckBox.TabIndex = 11;
+            this.UseFakeDNSCheckBox.Text = "Use Fake DNS (Suggest open if NTT is Udpblock)";
+            this.UseFakeDNSCheckBox.UseVisualStyleBackColor = true;
+            // 
             // TUNTAPProxyDNSCheckBox
             // 
             this.TUNTAPProxyDNSCheckBox.AutoSize = true;
-            this.TUNTAPProxyDNSCheckBox.Location = new System.Drawing.Point(120, 162);
+            this.TUNTAPProxyDNSCheckBox.Location = new System.Drawing.Point(261, 139);
             this.TUNTAPProxyDNSCheckBox.Name = "TUNTAPProxyDNSCheckBox";
             this.TUNTAPProxyDNSCheckBox.Size = new System.Drawing.Size(153, 21);
             this.TUNTAPProxyDNSCheckBox.TabIndex = 10;
@@ -164,7 +200,7 @@
             // TUNTAPUseCustomDNSCheckBox
             // 
             this.TUNTAPUseCustomDNSCheckBox.AutoSize = true;
-            this.TUNTAPUseCustomDNSCheckBox.Location = new System.Drawing.Point(120, 138);
+            this.TUNTAPUseCustomDNSCheckBox.Location = new System.Drawing.Point(10, 139);
             this.TUNTAPUseCustomDNSCheckBox.Name = "TUNTAPUseCustomDNSCheckBox";
             this.TUNTAPUseCustomDNSCheckBox.Size = new System.Drawing.Size(127, 21);
             this.TUNTAPUseCustomDNSCheckBox.TabIndex = 9;
@@ -243,7 +279,7 @@
             // ControlButton
             // 
             this.ControlButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.ControlButton.Location = new System.Drawing.Point(781, 356);
+            this.ControlButton.Location = new System.Drawing.Point(804, 356);
             this.ControlButton.Name = "ControlButton";
             this.ControlButton.Size = new System.Drawing.Size(75, 23);
             this.ControlButton.TabIndex = 11;
@@ -264,6 +300,9 @@
             // 
             // BehaviorGroupBox
             // 
+            this.BehaviorGroupBox.Controls.Add(this.BootShadowsocksFromDLLCheckBox);
+            this.BehaviorGroupBox.Controls.Add(this.AclAddr);
+            this.BehaviorGroupBox.Controls.Add(this.AclLabel);
             this.BehaviorGroupBox.Controls.Add(this.DetectionInterval_Label);
             this.BehaviorGroupBox.Controls.Add(this.DetectionInterval_TextBox);
             this.BehaviorGroupBox.Controls.Add(this.EnableStartedTcping_CheckBox);
@@ -285,15 +324,42 @@
             this.BehaviorGroupBox.Controls.Add(this.ExitWhenClosedCheckBox);
             this.BehaviorGroupBox.Location = new System.Drawing.Point(438, 12);
             this.BehaviorGroupBox.Name = "BehaviorGroupBox";
-            this.BehaviorGroupBox.Size = new System.Drawing.Size(420, 333);
+            this.BehaviorGroupBox.Size = new System.Drawing.Size(441, 333);
             this.BehaviorGroupBox.TabIndex = 8;
             this.BehaviorGroupBox.TabStop = false;
             this.BehaviorGroupBox.Text = "Behavior";
             // 
+            // BootShadowsocksFromDLLCheckBox
+            // 
+            this.BootShadowsocksFromDLLCheckBox.AutoSize = true;
+            this.BootShadowsocksFromDLLCheckBox.Location = new System.Drawing.Point(12, 128);
+            this.BootShadowsocksFromDLLCheckBox.Name = "BootShadowsocksFromDLLCheckBox";
+            this.BootShadowsocksFromDLLCheckBox.Size = new System.Drawing.Size(297, 21);
+            this.BootShadowsocksFromDLLCheckBox.TabIndex = 21;
+            this.BootShadowsocksFromDLLCheckBox.Text = "Boot Shadowsocks from DLL(No support ACL)";
+            this.BootShadowsocksFromDLLCheckBox.UseVisualStyleBackColor = true;
+            // 
+            // AclAddr
+            // 
+            this.AclAddr.Location = new System.Drawing.Point(117, 274);
+            this.AclAddr.Name = "AclAddr";
+            this.AclAddr.Size = new System.Drawing.Size(315, 23);
+            this.AclAddr.TabIndex = 19;
+            this.AclAddr.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // AclLabel
+            // 
+            this.AclLabel.AutoSize = true;
+            this.AclLabel.Location = new System.Drawing.Point(9, 277);
+            this.AclLabel.Name = "AclLabel";
+            this.AclLabel.Size = new System.Drawing.Size(78, 17);
+            this.AclLabel.TabIndex = 20;
+            this.AclLabel.Text = "Custom ACL";
+            // 
             // DetectionInterval_Label
             // 
             this.DetectionInterval_Label.AutoSize = true;
-            this.DetectionInterval_Label.Location = new System.Drawing.Point(230, 151);
+            this.DetectionInterval_Label.Location = new System.Drawing.Point(230, 193);
             this.DetectionInterval_Label.Name = "DetectionInterval_Label";
             this.DetectionInterval_Label.Size = new System.Drawing.Size(128, 17);
             this.DetectionInterval_Label.TabIndex = 18;
@@ -301,16 +367,16 @@
             // 
             // DetectionInterval_TextBox
             // 
-            this.DetectionInterval_TextBox.Location = new System.Drawing.Point(364, 148);
+            this.DetectionInterval_TextBox.Location = new System.Drawing.Point(364, 190);
             this.DetectionInterval_TextBox.Name = "DetectionInterval_TextBox";
-            this.DetectionInterval_TextBox.Size = new System.Drawing.Size(47, 23);
+            this.DetectionInterval_TextBox.Size = new System.Drawing.Size(68, 23);
             this.DetectionInterval_TextBox.TabIndex = 17;
             this.DetectionInterval_TextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // EnableStartedTcping_CheckBox
             // 
             this.EnableStartedTcping_CheckBox.AutoSize = true;
-            this.EnableStartedTcping_CheckBox.Location = new System.Drawing.Point(152, 150);
+            this.EnableStartedTcping_CheckBox.Location = new System.Drawing.Point(152, 192);
             this.EnableStartedTcping_CheckBox.Name = "EnableStartedTcping_CheckBox";
             this.EnableStartedTcping_CheckBox.Size = new System.Drawing.Size(66, 21);
             this.EnableStartedTcping_CheckBox.TabIndex = 15;
@@ -320,7 +386,7 @@
             // DelayTestAfterStartup_Label
             // 
             this.DelayTestAfterStartup_Label.AutoSize = true;
-            this.DelayTestAfterStartup_Label.Location = new System.Drawing.Point(6, 151);
+            this.DelayTestAfterStartup_Label.Location = new System.Drawing.Point(9, 193);
             this.DelayTestAfterStartup_Label.Name = "DelayTestAfterStartup_Label";
             this.DelayTestAfterStartup_Label.Size = new System.Drawing.Size(141, 17);
             this.DelayTestAfterStartup_Label.TabIndex = 16;
@@ -329,18 +395,18 @@
             // BypassModeCheckBox
             // 
             this.BypassModeCheckBox.AutoSize = true;
-            this.BypassModeCheckBox.Location = new System.Drawing.Point(276, 236);
+            this.BypassModeCheckBox.Location = new System.Drawing.Point(12, 102);
             this.BypassModeCheckBox.Name = "BypassModeCheckBox";
-            this.BypassModeCheckBox.Size = new System.Drawing.Size(135, 21);
+            this.BypassModeCheckBox.Size = new System.Drawing.Size(160, 21);
             this.BypassModeCheckBox.TabIndex = 14;
-            this.BypassModeCheckBox.Text = "进程代理白名单模式";
+            this.BypassModeCheckBox.Text = "Process whitelist mode";
             this.BypassModeCheckBox.UseVisualStyleBackColor = true;
             this.BypassModeCheckBox.CheckedChanged += new System.EventHandler(this.BypassModeCheckBox_CheckedChanged);
             // 
             // Redirector2checkBox
             // 
             this.Redirector2checkBox.AutoSize = true;
-            this.Redirector2checkBox.Location = new System.Drawing.Point(152, 235);
+            this.Redirector2checkBox.Location = new System.Drawing.Point(148, 310);
             this.Redirector2checkBox.Name = "Redirector2checkBox";
             this.Redirector2checkBox.Size = new System.Drawing.Size(118, 21);
             this.Redirector2checkBox.TabIndex = 11;
@@ -350,7 +416,7 @@
             // ExperimentalFunction_Label
             // 
             this.ExperimentalFunction_Label.AutoSize = true;
-            this.ExperimentalFunction_Label.Location = new System.Drawing.Point(6, 236);
+            this.ExperimentalFunction_Label.Location = new System.Drawing.Point(9, 310);
             this.ExperimentalFunction_Label.Name = "ExperimentalFunction_Label";
             this.ExperimentalFunction_Label.Size = new System.Drawing.Size(133, 17);
             this.ExperimentalFunction_Label.TabIndex = 13;
@@ -358,16 +424,16 @@
             // 
             // STUN_ServerPortTextBox
             // 
-            this.STUN_ServerPortTextBox.Location = new System.Drawing.Point(117, 206);
+            this.STUN_ServerPortTextBox.Location = new System.Drawing.Point(117, 245);
             this.STUN_ServerPortTextBox.Name = "STUN_ServerPortTextBox";
-            this.STUN_ServerPortTextBox.Size = new System.Drawing.Size(294, 23);
+            this.STUN_ServerPortTextBox.Size = new System.Drawing.Size(315, 23);
             this.STUN_ServerPortTextBox.TabIndex = 8;
             this.STUN_ServerPortTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(6, 209);
+            this.label2.Location = new System.Drawing.Point(9, 248);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(110, 17);
             this.label2.TabIndex = 12;
@@ -376,7 +442,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(6, 180);
+            this.label1.Location = new System.Drawing.Point(9, 222);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(82, 17);
             this.label1.TabIndex = 10;
@@ -394,9 +460,9 @@
             // 
             // STUN_ServerTextBox
             // 
-            this.STUN_ServerTextBox.Location = new System.Drawing.Point(117, 177);
+            this.STUN_ServerTextBox.Location = new System.Drawing.Point(117, 216);
             this.STUN_ServerTextBox.Name = "STUN_ServerTextBox";
-            this.STUN_ServerTextBox.Size = new System.Drawing.Size(294, 23);
+            this.STUN_ServerTextBox.Size = new System.Drawing.Size(315, 23);
             this.STUN_ServerTextBox.TabIndex = 11;
             this.STUN_ServerTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
@@ -413,7 +479,7 @@
             // ProfileCount_Label
             // 
             this.ProfileCount_Label.AutoSize = true;
-            this.ProfileCount_Label.Location = new System.Drawing.Point(6, 123);
+            this.ProfileCount_Label.Location = new System.Drawing.Point(9, 168);
             this.ProfileCount_Label.Name = "ProfileCount_Label";
             this.ProfileCount_Label.Size = new System.Drawing.Size(79, 17);
             this.ProfileCount_Label.TabIndex = 8;
@@ -421,9 +487,9 @@
             // 
             // ProfileCount_TextBox
             // 
-            this.ProfileCount_TextBox.Location = new System.Drawing.Point(203, 120);
+            this.ProfileCount_TextBox.Location = new System.Drawing.Point(206, 165);
             this.ProfileCount_TextBox.Name = "ProfileCount_TextBox";
-            this.ProfileCount_TextBox.Size = new System.Drawing.Size(208, 23);
+            this.ProfileCount_TextBox.Size = new System.Drawing.Size(226, 23);
             this.ProfileCount_TextBox.TabIndex = 9;
             this.ProfileCount_TextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
@@ -475,7 +541,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
-            this.ClientSize = new System.Drawing.Size(868, 390);
+            this.ClientSize = new System.Drawing.Size(891, 390);
             this.Controls.Add(this.BehaviorGroupBox);
             this.Controls.Add(this.PortGroupBox);
             this.Controls.Add(this.GlobalBypassIPsButton);
@@ -542,5 +608,11 @@
         private System.Windows.Forms.CheckBox EnableStartedTcping_CheckBox;
         private System.Windows.Forms.Label DelayTestAfterStartup_Label;
         private System.Windows.Forms.Label DetectionInterval_Label;
+        private System.Windows.Forms.Label RedirectorLabel;
+        private System.Windows.Forms.TextBox RedirectorTextBox;
+        private System.Windows.Forms.TextBox AclAddr;
+        private System.Windows.Forms.Label AclLabel;
+        private System.Windows.Forms.CheckBox UseFakeDNSCheckBox;
+        private System.Windows.Forms.CheckBox BootShadowsocksFromDLLCheckBox;
     }
 }

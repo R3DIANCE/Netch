@@ -1,12 +1,12 @@
-﻿using System;
+﻿using Netch.Models;
+using Netch.Models.SS;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
-using Netch.Models;
-using Netch.Models.SS;
-using Newtonsoft.Json;
 
 namespace Netch.Utils
 {
@@ -28,7 +28,7 @@ namespace Netch.Utils
         /// <returns>加密后的字符串</returns>
         public static string URLSafeBase64Encode(string text)
         {
-            return Convert.ToBase64String(Encoding.UTF8.GetBytes(text)).Replace("-", "+").Replace("_", "/").PadRight(text.Length + (4 - text.Length % 4) % 4, '=');
+            return Convert.ToBase64String(Encoding.UTF8.GetBytes(text)).Replace("+", "-").Replace("/", "_").Replace("=", "");
         }
 
         /// <summary>

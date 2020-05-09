@@ -126,19 +126,7 @@ namespace Netch.Controllers
                         {
                             enabled = server.UseMux
                         }
-                    },
-                    //此处修复一个诡异的BUG 感谢@ColinWood Tap模式 Mux不能为Null 否则Netch内存占用极大
-                    /*new Models.Information.VMess.Outbounds
-                    {
-                        tag = "direct",
-                        protocol = "freedom",
-                        settings = null,
-                        streamSettings = null,
-                        *//*mux = new Models.Information.VMess.OutboundMux(){
-                            enabled = true
-                        }*//*
-                        mux = null
-                    }*/
+                    }
                 },
                 routing = new Models.Information.VMess.Routing
                 {
@@ -228,6 +216,7 @@ namespace Netch.Controllers
                 if (Instance != null && !Instance.HasExited)
                 {
                     Instance.Kill();
+                    Instance.WaitForExit();
                 }
             }
             catch (Exception e)

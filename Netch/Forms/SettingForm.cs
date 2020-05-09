@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Net;
 using System.Windows.Forms;
 using TaskScheduler;
@@ -53,8 +52,11 @@ namespace Netch.Forms
             TUNTAPGatewayLabel.Text = Utils.i18N.Translate(TUNTAPGatewayLabel.Text);
             TUNTAPUseCustomDNSCheckBox.Text = Utils.i18N.Translate(TUNTAPUseCustomDNSCheckBox.Text);
             TUNTAPProxyDNSCheckBox.Text = Utils.i18N.Translate(TUNTAPProxyDNSCheckBox.Text);
+            UseFakeDNSCheckBox.Text = Utils.i18N.Translate(UseFakeDNSCheckBox.Text);
             GlobalBypassIPsButton.Text = Utils.i18N.Translate(GlobalBypassIPsButton.Text);
             ControlButton.Text = Utils.i18N.Translate(ControlButton.Text);
+            BypassModeCheckBox.Text = Utils.i18N.Translate(BypassModeCheckBox.Text);
+            BootShadowsocksFromDLLCheckBox.Text = Utils.i18N.Translate(BootShadowsocksFromDLLCheckBox.Text);
 
             ExitWhenClosedCheckBox.Checked = Global.Settings.ExitWhenClosed;
             StopWhenExitedCheckBox.Checked = Global.Settings.StopWhenExited;
@@ -66,9 +68,11 @@ namespace Netch.Forms
             BypassModeCheckBox.Checked = Global.Settings.ProcessBypassMode;
             EnableStartedTcping_CheckBox.Checked = Global.Settings.StartedTcping;
             DetectionInterval_TextBox.Text = Global.Settings.StartedTcping_Interval.ToString();
+            BootShadowsocksFromDLLCheckBox.Checked = Global.Settings.BootShadowsocksFromDLL;
 
             Socks5PortTextBox.Text = Global.Settings.Socks5LocalPort.ToString();
             HTTPPortTextBox.Text = Global.Settings.HTTPLocalPort.ToString();
+            RedirectorTextBox.Text = Global.Settings.RedirectorTCPPort.ToString();
 
             TUNTAPAddressTextBox.Text = Global.Settings.TUNTAP.Address;
             TUNTAPNetmaskTextBox.Text = Global.Settings.TUNTAP.Netmask;
@@ -76,6 +80,7 @@ namespace Netch.Forms
 
             TUNTAPUseCustomDNSCheckBox.Checked = Global.Settings.TUNTAP.UseCustomDNS;
             TUNTAPProxyDNSCheckBox.Checked = Global.Settings.TUNTAP.ProxyDNS;
+            UseFakeDNSCheckBox.Checked = Global.Settings.TUNTAP.UseFakeDNS;
 
             BehaviorGroupBox.Text = Utils.i18N.Translate(BehaviorGroupBox.Text);
             ExitWhenClosedCheckBox.Text = Utils.i18N.Translate(ExitWhenClosedCheckBox.Text);
@@ -94,6 +99,9 @@ namespace Netch.Forms
             ProfileCount_TextBox.Text = Global.Settings.ProfileCount.ToString();
             STUN_ServerTextBox.Text = Global.Settings.STUN_Server.ToString();
             STUN_ServerPortTextBox.Text = Global.Settings.STUN_Server_Port.ToString();
+
+            AclLabel.Text = Utils.i18N.Translate(AclLabel.Text);
+            AclAddr.Text = Global.Settings.ACL.ToString();
 
             if (Global.Settings.TUNTAP.DNS.Count > 0)
             {
@@ -155,7 +163,8 @@ namespace Netch.Forms
             Global.Settings.RunAtStartup = RunAtStartup.Checked;
             Global.Settings.UseRedirector2 = Redirector2checkBox.Checked;
             Global.Settings.ProcessBypassMode = BypassModeCheckBox.Checked;
-            Global.Settings.StartedTcping = EnableStartedTcping_CheckBox.Checked;
+            Global.Settings.BootShadowsocksFromDLL = BootShadowsocksFromDLLCheckBox.Checked;
+
 
             // 开机自启判断
             TaskSchedulerClass scheduler = new TaskSchedulerClass();
@@ -233,6 +242,27 @@ namespace Netch.Forms
             catch (FormatException)
             {
                 HTTPPortTextBox.Text = Global.Settings.HTTPLocalPort.ToString();
+                MessageBox.Show(Utils.i18N.Translate("Port value illegal. Try again."), Utils.i18N.Translate("Information"), MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                return;
+            }
+
+            try
+            {
+                var RedirectorPort = int.Parse(RedirectorTextBox.Text);
+
+                if (RedirectorPort > 0 && RedirectorPort < 65536)
+                {
+                    Global.Settings.RedirectorTCPPort = RedirectorPort;
+                }
+                else
+                {
+                    throw new FormatException();
+                }
+            }
+            catch (FormatException)
+            {
+                RedirectorTextBox.Text = Global.Settings.RedirectorTCPPort.ToString();
                 MessageBox.Show(Utils.i18N.Translate("Port value illegal. Try again."), Utils.i18N.Translate("Information"), MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                 return;
@@ -340,10 +370,12 @@ namespace Netch.Forms
             catch (FormatException)
             {
                 ProfileCount_TextBox.Text = Global.Settings.ProfileCount.ToString();
-                MessageBox.Show(Utils.i18N.Translate("STUN_ServerPort value illegal. Try again."), Utils.i18N.Translate("Information"), MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show(Utils.i18N.Translate("Detection interval value illegal. Try again."), Utils.i18N.Translate("Information"), MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                 return;
             }
+
+            Global.Settings.ACL = AclAddr.Text;
 
             Global.Settings.TUNTAP.Address = TUNTAPAddressTextBox.Text;
             Global.Settings.TUNTAP.Netmask = TUNTAPNetmaskTextBox.Text;
@@ -357,6 +389,7 @@ namespace Netch.Forms
 
             Global.Settings.TUNTAP.UseCustomDNS = TUNTAPUseCustomDNSCheckBox.Checked;
             Global.Settings.TUNTAP.ProxyDNS = TUNTAPProxyDNSCheckBox.Checked;
+            Global.Settings.TUNTAP.UseFakeDNS = UseFakeDNSCheckBox.Checked;
 
             Utils.Configuration.Save();
             MessageBox.Show(Utils.i18N.Translate("Saved"), Utils.i18N.Translate("Information"), MessageBoxButtons.OK, MessageBoxIcon.Information);

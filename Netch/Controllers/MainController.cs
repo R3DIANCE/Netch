@@ -1,8 +1,8 @@
-﻿using System;
+﻿using Netch.Forms;
+using System;
 using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace Netch.Controllers
@@ -39,6 +39,11 @@ namespace Netch.Controllers
         ///     V2Ray 控制器
         /// </summary>
         public VMessController pVMessController;
+
+        /// <summary>
+        ///     Trojan 控制器
+        /// </summary>
+        public TrojanController pTrojanController;
 
         /// <summary>
         ///		NF 控制器
@@ -108,6 +113,14 @@ namespace Netch.Controllers
                     }
                     result = pVMessController.Start(server, mode);
                     break;
+                case "Trojan":
+                    KillProcess("Trojan");
+                    if (pTrojanController == null)
+                    {
+                        pTrojanController = new TrojanController();
+                    }
+                    result = pTrojanController.Start(server, mode);
+                    break;
             }
 
             if (result)
@@ -123,7 +136,14 @@ namespace Netch.Controllers
                         pNTTController = new NTTController();
                     }
                     // 进程代理模式，启动 NF 控制器
-                    result = pNFController.Start(server, mode);
+                    result = pNFController.Start(server, mode, false);
+                    if (!result)
+                    {
+                        MainForm.Instance.StatusText($"{Utils.i18N.Translate("Status")}{Utils.i18N.Translate(": ")}{Utils.i18N.Translate("ReStarting Redirector")}");
+                        Utils.Logging.Info("正常启动失败后尝试停止驱动服务再重新启动");
+                        //正常启动失败后尝试停止驱动服务再重新启动
+                        result = pNFController.Start(server, mode, true);
+                    }
                     if (result)
                         Task.Run(() =>
                         {
@@ -210,6 +230,10 @@ namespace Netch.Controllers
             else if (pVMessController != null)
             {
                 pVMessController.Stop();
+            }
+            else if (pTrojanController != null)
+            {
+                pTrojanController.Stop();
             }
 
             if (pNFController != null)
